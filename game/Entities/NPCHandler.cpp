@@ -355,6 +355,19 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket& recv_data)
         if (!sScriptDevAIMgr.OnGossipSelect(_player, pCreature, sender, action, code.empty() ? nullptr : code.c_str()))
             _player->OnGossipSelect(pCreature, gossipListId, menuId);
     }
+    else if (guid.IsGameObject())
+    {
+        GameObject* pGo = GetPlayer()->GetGameObjectIfCanInteractWith(guid);
+
+        if (!pGo)
+        {
+            DEBUG_LOG("WORLD: HandleGossipSelectOptionOpcode - %s not found or you can't interact with it.", guid.GetString().c_str());
+            return;
+        }
+
+        if (!sScriptDevAIMgr.OnGossipSelect(_player, pGo, sender, action, code.empty() ? nullptr : code.c_str()))
+            _player->OnGossipSelect(pGo, gossipListId, menuId);
+    }
 }
 
 void WorldSession::HandleSpiritHealerActivateOpcode(WorldPacket& recv_data)
