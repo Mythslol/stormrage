@@ -29,7 +29,7 @@
 #include "SystemConfig.h"
 #include "revision.h"
 #include "Util.h"
-
+#include
 bool ChatHandler::HandleCustomAnn(char* args)
 {
   int32 strid = 0;
