@@ -85,8 +85,8 @@ InstanceData* GetNewInstanceScript(Map* map)
 struct Script
 {
     Script() :
-        pGossipHello(nullptr), pGossipHelloGO(nullptr), pGossipSelect(nullptr), pGossipSelectGO(nullptr),
-        pGossipSelectWithCode(nullptr), pGossipSelectGOWithCode(nullptr),
+        pGossipHelloItem(nullptr), pGossipHello(nullptr), pGossipHelloGO(nullptr), pGossipSelectItem(nullptr), pGossipSelect(nullptr), pGossipSelectGO(nullptr),
+        pGossipSelectItemWithCode(nullptr), pGossipSelectWithCode(nullptr), pGossipSelectGOWithCode(nullptr),
         pDialogStatusNPC(nullptr), pDialogStatusGO(nullptr),
         pQuestAcceptNPC(nullptr), pQuestAcceptGO(nullptr), pQuestAcceptItem(nullptr),
         pQuestRewardedNPC(nullptr), pQuestRewardedGO(nullptr),
@@ -97,10 +97,13 @@ struct Script
 
     std::string Name;
 
+    bool (*pGossipHelloItem)(Player*, Item*);
     bool (*pGossipHello)(Player*, Creature*);
     bool (*pGossipHelloGO)(Player*, GameObject*);
+    bool (*pGossipSelectItem)(Player*, Item*, uint32, uint32);
     bool (*pGossipSelect)(Player*, Creature*, uint32, uint32);
     bool (*pGossipSelectGO)(Player*, GameObject*, uint32, uint32);
+    bool (*pGossipSelectItemWithCode)(Player*, Item*, uint32, uint32, const char*);
     bool (*pGossipSelectWithCode)(Player*, Creature*, uint32, uint32, const char*);
     bool (*pGossipSelectGOWithCode)(Player*, GameObject*, uint32, uint32, const char*);
     uint32(*pDialogStatusNPC)(const Player*, const Creature*);
@@ -140,8 +143,10 @@ class ScriptDevAIMgr
         void LoadAreaTriggerScripts();
         void LoadEventIdScripts();
 
+        bool OnGossipHello(Player* pPlayer, Item* pItem); //item
         bool OnGossipHello(Player* pPlayer, Creature* pCreature);
         bool OnGossipHello(Player* pPlayer, GameObject* pGo);
+        bool OnGossipSelect(Player* pPlayer, Item* pItem, uint32 uiSender, uint32 uiAction, const char* code); //item
         bool OnGossipSelect(Player* pPlayer, Creature* pCreature, uint32 uiSender, uint32 uiAction, const char* code);
         bool OnGossipSelect(Player* pPlayer, GameObject* pGo, uint32 uiSender, uint32 uiAction, const char* code);
         bool OnQuestAccept(Player* pPlayer, Creature* pCreature, Quest const* pQuest);
